@@ -3,4 +3,7 @@ from models import *
 
 def create_tables():
     database.connect()
-    database.create_tables([User,Group])
+    try:
+        database.create_tables([User, Group], True)
+    except Exception, e:
+        print str(e)

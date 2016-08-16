@@ -66,6 +66,7 @@ class User(peewee.Model):
 
 class Group(peewee.Model):
     vk_id = peewee.CharField(default='', null=True)
+    query_string = peewee.CharField(default='', null=True)
     name = peewee.CharField(default='', null=True)
     screen_name = peewee.CharField(default='', null=True)
     type = peewee.CharField(default='', null=True)

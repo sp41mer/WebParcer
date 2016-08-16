@@ -10,7 +10,7 @@ def get_groups(query):
     search_query = query
     response = requests.post('https://api.vk.com/method/' + method,
                                 data={'q': search_query,
-                                      'count': 1,
+                                      'count': 1000,
                                       'v': 5.53,
                                       'access_token': vk_access_token})
     data = json.loads(response.text)
@@ -18,7 +18,8 @@ def get_groups(query):
     for group in group_list:
         print group.get('name', '')
         new_group = Group(
-            vk_id=group.get('gid', ''),
+            vk_id=group.get('id', ''),
+            query_string=query,
             name=group.get('name', ''),
             screen_name=group.get('screen_name', ''),
             type=group.get('type', ''),

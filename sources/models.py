@@ -1,8 +1,10 @@
 __author__ = 'sp41mer'
-import uuid, peewee
+import uuid, peewee, connections
 from cassandra.cqlengine import columns
 from cassandra.cqlengine.models import Model
 
+
+#Cassandra models
 
 class GroupNoSQL(Model):
     vk_id = columns.Text(primary_key=True)
@@ -14,13 +16,7 @@ class FriendsNoSQL(Model):
     friends = columns.List(columns.Integer)
 
 
-database = peewee.PostgresqlDatabase(
-    'parsing_db',
-    user='root',
-    password='root',
-    host='localhost'
-)
-
+#Postgres models
 
 class User(peewee.Model):
     vk_id = peewee.IntegerField(default=0, null=True)
@@ -61,7 +57,7 @@ class User(peewee.Model):
     interests = peewee.TextField(default='', null=True)
 
     class Meta:
-        database = database
+        database = connections.database
 
 
 class Group(peewee.Model):
@@ -76,4 +72,4 @@ class Group(peewee.Model):
     photo_200 = peewee.CharField(default='', null=True)
 
     class Meta:
-        database = database
+        database = connections.database

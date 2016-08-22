@@ -12,23 +12,23 @@ def parce_users_from_groups():
              'followers_count,online,relation,interests'
 
     connection.setup(['127.0.0.1'], "parse_keyspace", protocol_version=3)
-    for group in Group.select().limit(1):
+    for group in Group.select().limit(100):
         group_id = group.vk_id
         q = GroupNoSQL.objects(vk_id=group_id)
 
         for info in q[0].members:
-            #grabbing friends to Cassandra
-            method = "friends.get"
             user_id = info
-            response = requests.post('https://api.vk.com/method/' + method,
-                                     data={'user_id': user_id,
-                                           'access_token': vk_access_token})
-            data = json.loads(response.text)
-            try:
-                friends = data['response']
-                FriendsNoSQL.create(vk_id=str(user_id), friends=friends)
-            except Exception:
-                print str(user_id)+' '+data['error']['error_msg']
+            #grabbing friends to Cassandra
+            # method = "friends.get"
+            # response = requests.post('https://api.vk.com/method/' + method,
+            #                          data={'user_id': user_id,
+            #                                'access_token': vk_access_token})
+            # data = json.loads(response.text)
+            # try:
+            #     friends = data['response']
+            #     FriendsNoSQL.create(vk_id=str(user_id), friends=friends)
+            # except Exception:
+            #     print str(user_id)+' '+data['error']['error_msg']
             #grab info to PotsgresSQL
             method = "users.get"
             response = requests.post('https://api.vk.com/method/' + method,
